@@ -86,8 +86,62 @@ class GeoGuessrBot():
         elif(options['rules'].lower() == "nmpz"):
             nmpz_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[5]')
             nmpz_btn.click()
-
         return
+
+    def set_map_options(self, options):
+        no_default = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div/label/span[2]')))
+        try:
+            slider = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[2]/div[2]')
+        except:
+            no_default.click()
+
+        slider = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[2]')))
+        amount = floor(options['time']/10)
+        slider.click()
+        actions = ActionChains(self.driver)
+        actions.move_to_element_with_offset(slider, 12+amount*5,0)
+        actions.click()
+        actions.perform()
+
+        if(options['rules'] == ""):
+            no_rules = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[1]')
+            no_rules.click()
+        elif(options['rules'].lower() == "nm"):
+            nm_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[2]')
+            nm_btn.click()
+        elif(options['rules'].lower() == "nz"):
+            nz_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[3]')
+            nz_btn.click()
+        elif(options['rules'].lower() == "nmz"):
+            nmz_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[4]')
+            nmz_btn.click()
+        elif(options['rules'].lower() == "nmpz"):
+            nmpz_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[5]')
+            nmpz_btn.click()
+        return
+
+    def get_map(self, options):
+        self.driver.get(options['map'])
+
+        play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[3]/button')))
+        play_btn.click()
+
+        challenge_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[2]/div/div[2]/label/div[1]')))
+        challenge_btn.click()
+
+        self.set_map_options(options)
+
+        invite_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[4]/button')))
+        invite_btn.click()
+
+        start_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[2]/button')))
+        start_btn.click()
+
+        self.wait.until(lambda driver: self.driver.current_url != options['map']+"/play")
+
+        link = self.driver.current_url
+        self.driver.get("https://www.geoguessr.com/")
+        return link
 
 class MyClient(discord.Client):
     async def on_ready(self):
@@ -103,7 +157,10 @@ class MyClient(discord.Client):
         option = self.parse_options(message.content)
 
         if(message.content.lower().startswith("!geo")):
-            link = web.get_link(option)
+            if(option['map'] != ""):
+                link = web.get_map(option)
+            else:
+                link = web.get_link(option)
             await message.channel.send(link)
             return
 
@@ -118,6 +175,7 @@ class MyClient(discord.Client):
         mode = "country-streak"
         rules = ""
         time = 0
+        gmap = ""
         for i in optlist[a:]:
             if(i.startswith("mode")):
                 mode = i[i.find("=")+1:]
@@ -125,11 +183,14 @@ class MyClient(discord.Client):
                 rules = i[i.find("=")+1:]
             elif(i.startswith("time")):
                 time = int(i[i.find("=")+1:])
+            elif(i.startswith("map")):
+                gmap = i[i.find("=")+1:]
 
         opts = {
             'mode': mode,
             'rules': rules,
             'time': time,
+            'map': gmap,
         }
         return opts
 

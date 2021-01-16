@@ -1,3 +1,7 @@
+---
+title: README
+---
+
 # geoguessr-bot
 
 This is a simple implementation of a discord bot that sends geoguessr challenge links on demand.
@@ -31,7 +35,6 @@ Another example with specifying no move, pan or zoom and a time limit of 1 minut
 
 ## TODO:
 * Implement other game modes (in addition to country streak):
-	* The ability to receive a link to a map and reply with a challenge link to that map
 	* Hosting battle-royale games
 * Make the interface/bot more customizable:
 	* Allow changing the prefix more easily
