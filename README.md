@@ -30,9 +30,9 @@ Another example with specifying no move, pan or zoom and a time limit of 1 minut
 ```
 
 ## TODO:
-* Implement other game modes (not just country streak):
-	* The ability to recieve a link to a map and reply with a challenge link to that map
+* Implement other game modes (in addition to country streak):
+	* The ability to receive a link to a map and reply with a challenge link to that map
 	* Hosting battle-royale games
-* Make the interface(bot) more customizable:
+* Make the interface/bot more customizable:
 	* Allow changing the prefix more easily
-	* Make a the program read a config file where things such as the token or path to the driver-executable can be stored
+	* Make the program read a config file where things such as the token or path to the driver-executable can be stored
