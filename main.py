@@ -18,7 +18,7 @@ class GeoGuessrBot():
         chrome_options.add_argument("--headless")
         self.driver = webdriver.Chrome(executable_path='/home/lajp/Downloads/chromedriver', options=chrome_options)
         self.wait = WebDriverWait(self.driver, 10)
-        
+
     def login(self):
         self.driver.get("https://www.geoguessr.com/")
 
@@ -35,7 +35,7 @@ class GeoGuessrBot():
         enter_btn.click()
 
         sleep(2)
-                           
+
     def get_link(self, options):
         self.driver.get("https://www.geoguessr.com/" + options['mode'])
 
@@ -43,8 +43,8 @@ class GeoGuessrBot():
         challenge_btn.click()
 
         self.set_options(options)
-        
-        invite_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[4]/button'))) 
+
+        invite_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[4]/button')))
         invite_btn.click()
 
         start_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/button')))
@@ -62,7 +62,7 @@ class GeoGuessrBot():
             slider = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[2]')
         except:
             no_default.click()
-            
+
         slider = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[2]')))
         amount = floor(options['time']/10)
         slider.click()
@@ -86,9 +86,9 @@ class GeoGuessrBot():
         elif(options['rules'].lower() == "nmpz"):
             nmpz_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[5]')
             nmpz_btn.click()
-            
+
         return
-        
+
 class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged in as {0}!'.format(self.user))
@@ -101,7 +101,7 @@ class MyClient(discord.Client):
                 return
 
         option = self.parse_options(message.content)
-        
+
         if(message.content.lower().startswith("!geo")):
             link = web.get_link(option)
             await message.channel.send(link)
