@@ -1,7 +1,3 @@
----
-title: README
----
-
 # geoguessr-bot
 
 This is a simple implementation of a discord bot that sends geoguessr challenge links on demand.
@@ -23,6 +19,7 @@ On discord simply type `!geo` to receive a country streak challenge without any 
 
 ## Rules/Settings:
 Rules are specified with appending to the command message a space followed by the setting name and the value separated by a '='
+
 Example with specifying no move:
 ```
 !geo rules=nm
