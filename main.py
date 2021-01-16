@@ -16,7 +16,7 @@ class GeoGuessrBot():
     def __init__(self):
         chrome_options = Options()
         chrome_options.add_argument("--headless")
-        self.driver = webdriver.Chrome(executable_path='/home/lajp/Downloads/chromedriver', options=chrome_options)
+        self.driver = webdriver.Chrome(executable_path='./drivers/chromedriver', options=chrome_options)
         self.wait = WebDriverWait(self.driver, 10)
 
     def login(self):
