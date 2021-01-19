@@ -12,6 +12,14 @@ from secrets import username, password
 
 allow_role_id = 0 # set this to only have a specific role allowed to use the bot
 
+default_opts = {
+    'mode': "country-streak",
+    'rules': "",
+    'time': 0,
+    'lobby': "",
+    'map': "",
+}
+
 class GeoGuessrBot():
     def __init__(self):
         chrome_options = Options()
@@ -64,7 +72,7 @@ class GeoGuessrBot():
             no_default.click()
 
         slider = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[2]')))
-        amount = floor(options['time']/10)
+        amount = floor(int(options['time'])/10)
         slider.click()
         actions = ActionChains(self.driver)
         actions.move_to_element_with_offset(slider, 12+amount*5,0)
@@ -96,7 +104,7 @@ class GeoGuessrBot():
             no_default.click()
 
         slider = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[2]')))
-        amount = floor(options['time']/10)
+        amount = floor(int(options['time'])/10)
         slider.click()
         actions = ActionChains(self.driver)
         actions.move_to_element_with_offset(slider, 12+amount*5,0)
@@ -149,6 +157,32 @@ class GeoGuessrBot():
         self.driver.get("https://www.geoguessr.com/")
         return link
 
+    def create_battle_royale(self):
+        self.driver.get("https://www.geoguessr.com/battle-royale")
+
+        try:
+            lobby_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div[2]/button[2]')))
+            lobby_btn.click()
+        except:
+            confirm_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div[1]/div/div/div/div/div/div[2]/button')))
+            confirm_btn.click()
+            lobby_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div[2]/button[2]')))
+            lobby_btn.click()
+
+        self.wait.until(lambda driver: self.driver.current_url != "https://www.geoguessr.com/battle-royale")
+
+        link = self.driver.current_url
+        self.driver.get("https://www.geoguessr.com/")
+        return link
+
+    def start_battle_royale(self, options):
+        self.driver.get(options['lobby'])
+
+        start_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/button')))
+        start_btn.click()
+        self.driver.get("https://www.geoguessr.com/")
+        return
+
 class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged in as {0}!'.format(self.user))
@@ -165,6 +199,11 @@ class MyClient(discord.Client):
         if(message.content.lower().startswith("!geo")):
             if(option['map'] != ""):
                 link = web.get_map(option)
+            if(option['lobby'] != ""):
+                web.start_battle_royale(option)
+                return
+            if(option['mode'] == "br" or option['mode'] == "battle-royale"):
+                link = web.create_battle_royale()
             else:
                 link = web.get_link(option)
             await message.channel.send(link)
@@ -172,35 +211,19 @@ class MyClient(discord.Client):
 
     def parse_options(self, message):
         a = 0
-        amount = message.count("=")
+        opts = default_opts.copy()
         optlist = message.split()[1:]
         if(len(optlist) > 0):
             if(not "=" in optlist[0]):
-                mode = optlist[0]
+                opts['mode'] = optlist[0]
                 a = 1
-        mode = "country-streak"
-        rules = ""
-        time = 0
-        gmap = ""
         for i in optlist[a:]:
-            if(i.startswith("mode")):
-                mode = i[i.find("=")+1:]
-            elif(i.startswith("rules")):
-                rules = i[i.find("=")+1:]
-            elif(i.startswith("time")):
-                time = int(i[i.find("=")+1:])
-            elif(i.startswith("map")):
-                gmap = i[i.find("=")+1:]
-
-        opts = {
-            'mode': mode,
-            'rules': rules,
-            'time': time,
-            'map': gmap,
-        }
+            opts[i[:i.find("=")]] = i[i.find("=")+1:]
         return opts
 
 web = GeoGuessrBot()
+print("Geoguessr initialized")
 web.login()
+print("Geoguessr login")
 client = MyClient()
 client.run("YourTokenHere")
