@@ -1,7 +1,3 @@
----
-title: README
----
-
 # geoguessr-bot
 
 This is a simple implementation of a discord bot that sends geoguessr challenge links on demand.
@@ -32,10 +28,24 @@ Another example with specifying no move, pan or zoom and a time limit of 1 minut
 ```
 !geo rules=nmpz time=60
 ```
+Starting a battle royale game aka. creating a new lobby:
+```
+!geo br
+```
+Specifying a battle royale lobby for the bot to join into to start the game:
+```
+!geo lobby=[link-to-lobby]
+```
+Generating a game with a custom/official map:
+```
+!geo map=[link-to-map]
+```
+Example with geoguessr official Finland map, 2 min limit and no move:
+```
+!geo map=https://www.geoguessr.com/maps/finland time=120 rules=nm
+```
 
 ## TODO:
-* Implement other game modes (in addition to country streak):
-	* Hosting battle-royale games
 * Make the interface/bot more customizable:
 	* Allow changing the prefix more easily
 	* Make the program read a config file where things such as the token or path to the driver-executable can be stored
