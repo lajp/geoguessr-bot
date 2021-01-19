@@ -123,7 +123,13 @@ class GeoGuessrBot():
     def get_map(self, options):
         self.driver.get(options['map'])
 
-        play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[3]/button')))
+        maplink = options['map']
+        maphash = maplink[maplink.rfind("/")+1:]
+        if(len(maphash) != 24):
+            play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[4]/button')))
+        else:
+            play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[3]/button')))
+
         play_btn.click()
 
         challenge_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[2]/div/div[2]/label/div[1]')))
