@@ -188,21 +188,24 @@ class MyClient(discord.Client):
         print('Logged in as {0}!'.format(self.user))
 
     async def on_message(self, message):
-        if(allow_role_id != 0):
-            kunku = message.guild.get_role(allow_role_id)
-            if(kunku not in message.author.roles):
-                await message.channel.send("OOT LIIAN NOBO! " + message.author.mention)
-                return
 
-        option = self.parse_options(message.content)
 
         if(message.content.lower().startswith("!geo")):
+            if(not type(message.channel) is discord.DMChannel):
+                if(allow_role_id != 0):
+                    kunku = message.guild.get_role(allow_role_id)
+                    if(kunku not in message.author.roles):
+                        await message.channel.send("OOT LIIAN NOBO! " + message.author.mention)
+                        return
+
+            option = self.parse_options(message.content)
+
             if(option['map'] != ""):
                 link = web.get_map(option)
-            if(option['lobby'] != ""):
+            elif(option['lobby'] != ""):
                 web.start_battle_royale(option)
                 return
-            if(option['mode'] == "br" or option['mode'] == "battle-royale"):
+            elif(option['mode'] == "br" or option['mode'] == "battle-royale"):
                 link = web.create_battle_royale()
             else:
                 link = web.get_link(option)
