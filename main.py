@@ -134,8 +134,11 @@ class GeoGuessrBot():
         maplink = options['map']
         maphash = maplink[maplink.rfind("/")+1:]
         if(len(maphash) != 24):
-            play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[4]/button')))
-        else:
+            try: # every explore-mode map
+                play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[4]/button')))
+            except: # world and famous-places (maybe more)
+                play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[3]/button')))
+        else: # Every map that has a 24-digit hexadecimal id
             play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[3]/button')))
 
         play_btn.click()
