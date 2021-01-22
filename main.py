@@ -9,6 +9,7 @@ from math import floor
 from time import sleep
 import discord
 from secrets import username, password
+from maps import explore_maps
 
 allow_role_id = 0 # set this to only have a specific role allowed to use the bot
 
@@ -134,10 +135,16 @@ class GeoGuessrBot():
         maplink = options['map']
         maphash = maplink[maplink.rfind("/")+1:]
         if(len(maphash) != 24):
-            try: # every explore-mode map
-                play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[4]/button')))
-            except: # world and famous-places (maybe more)
-                play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[3]/button')))
+            if(maphash in explore_maps):
+                try: # every explore-mode map
+                    play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[4]/button')))
+                except: # world and famous-places (maybe more)
+                    play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[3]/button')))
+            else:
+                try:
+                    play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[3]/button')))
+                except:
+                    play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[4]/button')))
         else: # Every map that has a 24-digit hexadecimal id
             play_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[1]/div[3]/button')))
 
@@ -191,8 +198,6 @@ class MyClient(discord.Client):
         print('Logged in as {0}!'.format(self.user))
 
     async def on_message(self, message):
-
-
         if(message.content.lower().startswith("!geo")):
             if(not type(message.channel) is discord.DMChannel):
                 if(allow_role_id != 0):
