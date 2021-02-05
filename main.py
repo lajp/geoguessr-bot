@@ -171,12 +171,12 @@ class GeoGuessrBot():
         self.driver.get("https://www.geoguessr.com/battle-royale")
 
         try:
-            lobby_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div[2]/button[2]')))
+            lobby_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[3]/button')))
             lobby_btn.click()
         except:
             confirm_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div[1]/div/div/div/div/div/div[2]/button')))
             confirm_btn.click()
-            lobby_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div[2]/button[2]')))
+            lobby_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[3]/button')))
             lobby_btn.click()
 
         self.wait.until(lambda driver: self.driver.current_url != "https://www.geoguessr.com/battle-royale")
@@ -187,8 +187,7 @@ class GeoGuessrBot():
 
     def start_battle_royale(self, options):
         self.driver.get(options['lobby'])
-
-        start_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/button')))
+        start_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div[1]/button')))
         start_btn.click()
         self.driver.get("https://www.geoguessr.com/")
         return
