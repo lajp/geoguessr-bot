@@ -7,9 +7,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from math import floor
 from time import sleep
-import discord
 from secrets import username, password
 from maps import explore_maps
+import discord, sys, json
 
 allow_role_id = 0 # set this to only have a specific role allowed to use the bot
 your_id = 0 # set to have the stop command work
