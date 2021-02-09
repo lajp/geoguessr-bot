@@ -221,7 +221,7 @@ class MyClient(discord.Client):
 
             option = self.parse_options(message.content)
             web.count+=1
-            await self.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=str("Succesfully sent: " + str(web.count) + " challenges!")))
+            await self.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=str(str(web.count) + " succesfully sent challenges!")))
 
             if(option['map'] != ""):
                 link = web.get_map(option)
