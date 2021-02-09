@@ -12,6 +12,7 @@ from secrets import username, password
 from maps import explore_maps
 
 allow_role_id = 0 # set this to only have a specific role allowed to use the bot
+your_id = 0 # set to have the stop command work
 
 default_opts = {
     'mode': "country-streak",
@@ -27,6 +28,12 @@ class GeoGuessrBot():
         chrome_options.add_argument("--headless")
         self.driver = webdriver.Chrome(executable_path='./drivers/chromedriver', options=chrome_options)
         self.wait = WebDriverWait(self.driver, 10)
+        with open('stats.json') as json_file:
+            data = json.load(json_file)
+            try:
+                self.count = data['count']
+            except:
+                self.count = 0
 
     def login(self):
         self.driver.get("https://www.geoguessr.com/")
@@ -192,6 +199,13 @@ class GeoGuessrBot():
         self.driver.get("https://www.geoguessr.com/")
         return
 
+    def stop_and_save(self):
+        data = {}
+        data['count'] = self.count
+        with open('stats.json', 'w') as outfile:
+            json.dump(data, outfile)
+        sys.exit()
+
 class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged in as {0}!'.format(self.user))
@@ -206,6 +220,8 @@ class MyClient(discord.Client):
                         return
 
             option = self.parse_options(message.content)
+            web.count+=1
+            await self.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=str("Succesfully sent: " + str(web.count) + " challenges!")))
 
             if(option['map'] != ""):
                 link = web.get_map(option)
@@ -218,6 +234,11 @@ class MyClient(discord.Client):
                 link = web.get_link(option)
             await message.channel.send(link)
             return
+
+        elif(message.content.lower().startswith("!stop")):
+            if(message.author.id == your_id):
+                web.stop_and_save()
+
 
     def parse_options(self, message):
         a = 0
