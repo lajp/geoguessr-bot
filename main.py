@@ -220,8 +220,6 @@ class MyClient(discord.Client):
                         return
 
             option = self.parse_options(message.content)
-            web.count+=1
-            await self.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=str(str(web.count) + " succesfully sent challenges!")))
 
             if(option['map'] != ""):
                 link = web.get_map(option)
@@ -233,6 +231,11 @@ class MyClient(discord.Client):
             else:
                 link = web.get_link(option)
             await message.channel.send(link)
+
+            # Update the status message
+            web.count+=1
+            await self.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=str(str(web.count) + " succesfully sent challenges!")))
+
             return
 
         elif(message.content.lower().startswith("!stop")):
