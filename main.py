@@ -199,12 +199,6 @@ class GeoGuessrBot():
         self.driver.get("https://www.geoguessr.com/")
         return
 
-    def stop_and_save(self):
-        data = {}
-        data['count'] = self.count
-        with open('stats.json', 'w') as outfile:
-            json.dump(data, outfile)
-        sys.exit()
 
 class MyClient(discord.Client):
     async def on_ready(self):
@@ -240,8 +234,17 @@ class MyClient(discord.Client):
 
         elif(message.content.lower().startswith("!stop")):
             if(message.author.id == your_id):
-                web.stop_and_save()
+                await self.stop_and_save()
 
+
+    async def stop_and_save(self):
+        data = {}
+        data['count'] = web.count
+        with open('stats.json', 'w') as outfile:
+            json.dump(data, outfile)
+        web.driver.quit()
+        await self.close()
+        sys.exit()
 
     def parse_options(self, message):
         a = 0
