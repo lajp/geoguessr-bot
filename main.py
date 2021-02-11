@@ -22,29 +22,30 @@ default_opts = {
     'map': "",
 }
 
-help_message = """**GEOGUESSR-BOT**: [USAGE]
-    `!geo`
-    `!geo [rules=rules] [time=time]`
-    `!geo [mode] [rules=rules] [time=time]`
-    `!geo [mode]`
-    `!geo [map=map] [rules=rules] [time=time]`
-    `!geo [lobby=lobby]`
-    `!geo [help]`\n
+help_message = """
+**GEOGUESSR-BOT**: [USAGE]
+`!geo`
+`!geo [rules=rules] [time=time]`
+`!geo [mode] [rules=rules] [time=time]`
+`!geo [mode]`
+`!geo [map=map] [rules=rules] [time=time]`
+`!geo [lobby=lobby]`
+`!geo [help]`
 
-    **MODE:**
-    [cs|country-streak|br|battle-royale]\n
+**MODE:**
+[cs|country-streak|br|battle-royale]
 
-    **RULES:**
-    rules=[nm|nz|nmz|nmpz]\n
+**RULES:**
+rules=[nm|nz|nmz|nmpz]
 
-    **MAP:**
-    map=[link-to-map]\n
+**MAP:**
+map=[link-to-map]
 
-    **LOBBY:**
-    lobby=[link-to-lobby]\n
+**LOBBY:**
+lobby=[link-to-lobby]
 
-    **TIME:**
-    time=[0-500]"""
+**TIME:**
+time=[0-500]"""
 
 class GeoGuessrBot():
     def __init__(self):
