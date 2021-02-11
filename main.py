@@ -22,6 +22,30 @@ default_opts = {
     'map': "",
 }
 
+help_message = """**GEOGUESSR-BOT**: [USAGE]
+    `!geo`
+    `!geo [rules=rules] [time=time]`
+    `!geo [mode] [rules=rules] [time=time]`
+    `!geo [mode]`
+    `!geo [map=map] [rules=rules] [time=time]`
+    `!geo [lobby=lobby]`
+    `!geo [help]`\n
+
+    **MODE:**
+    [cs|country-streak|br|battle-royale]\n
+
+    **RULES:**
+    rules=[nm|nz|nmz|nmpz]\n
+
+    **MAP:**
+    map=[link-to-map]\n
+
+    **LOBBY:**
+    lobby=[link-to-lobby]\n
+
+    **TIME:**
+    time=[0-500]"""
+
 class GeoGuessrBot():
     def __init__(self):
         chrome_options = Options()
@@ -217,6 +241,9 @@ class MyClient(discord.Client):
 
             if(option['map'] != ""):
                 link = web.get_map(option)
+            elif(option['mode'] == "help"):
+                await self.send_help(message)
+                return
             elif(option['lobby'] != ""):
                 web.start_battle_royale(option)
                 return
@@ -236,6 +263,9 @@ class MyClient(discord.Client):
             if(message.author.id == your_id):
                 await self.stop_and_save()
 
+    async def send_help(self, message):
+        await message.channel.send(help_message)
+        return
 
     async def stop_and_save(self):
         data = {}
