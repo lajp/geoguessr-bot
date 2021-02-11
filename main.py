@@ -162,6 +162,9 @@ class GeoGuessrBot():
         return
 
     def get_map(self, options):
+        if(not options['map'].startswith("https://")):
+            options['map'] = "https://www.geoguessr.com/maps/" + options['map']
+
         self.driver.get(options['map'])
 
         maplink = options['map']
