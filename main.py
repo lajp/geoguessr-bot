@@ -20,32 +20,25 @@ default_opts = {
     'time': 0,
     'lobby': "",
     'map': "",
+    'count': 1,
 }
 
 help_message = """
 **GEOGUESSR-BOT**: [USAGE]
 `!geo`
-`!geo [rules=rules] [time=time]`
-`!geo [mode] [rules=rules] [time=time]`
+`!geo [rules=rules] [time=time] [count=count]`
+`!geo [mode] [rules=rules] [time=time] [count=count]`
 `!geo [mode]`
-`!geo [map=map] [rules=rules] [time=time]`
+`!geo [map=map] [rules=rules] [time=time] [count=count]`
 `!geo [lobby=lobby]`
 `!geo [help]`
 
-**MODE:**
-[cs|country-streak|br|battle-royale]
-
-**RULES:**
-rules=[nm|nz|nmz|nmpz]
-
-**MAP:**
-map=[link-to-map]
-
-**LOBBY:**
-lobby=[link-to-lobby]
-
-**TIME:**
-time=[0-500]"""
+**MODE:** [cs|country-streak|br|battle-royale]
+**RULES:** rules=[nm|nz|nmz|nmpz]
+**MAP:** map=[link-to-map]
+**LOBBY:** lobby=[link-to-lobby]
+**TIME:** time=[0-500]
+**COUNT:** count=[1-10]"""
 
 class GeoGuessrBot():
     def __init__(self):
@@ -53,6 +46,7 @@ class GeoGuessrBot():
         chrome_options.add_argument("--headless")
         self.driver = webdriver.Chrome(executable_path='./drivers/chromedriver', options=chrome_options)
         self.wait = WebDriverWait(self.driver, 10)
+        self.busy = False
         with open('stats.json') as json_file:
             data = json.load(json_file)
             try:
@@ -242,23 +236,34 @@ class MyClient(discord.Client):
                         return
 
             option = self.parse_options(message.content)
-
-            if(option['map'] != ""):
-                link = web.get_map(option)
-            elif(option['mode'] == "help"):
-                await self.send_help(message)
+            if(web.busy):
+                await message.channel.send("Bot is busy! Please try again in a second...")
                 return
-            elif(option['lobby'] != ""):
-                web.start_battle_royale(option)
+            if(int(option['count']) > 10):
+                await message.channel.send("https://media1.tenor.com/images/dc29e366458426e5c12ed5b481f713b2/tenor.gif?itemid=16851937")
                 return
-            elif(option['mode'] == "br" or option['mode'] == "battle-royale"):
-                link = web.create_battle_royale()
-            else:
-                link = web.get_link(option)
-            await message.channel.send(link)
-
+            web.busy = True
+            i = 0
+            while(i < int(option['count'])):
+                if(option['map'] != ""):
+                    link = web.get_map(option)
+                elif(option['mode'] == "help"):
+                    await self.send_help(message)
+                    web.busy = False
+                    return
+                elif(option['lobby'] != ""):
+                    web.start_battle_royale(option)
+                    web.busy = False
+                    return
+                elif(option['mode'] == "br" or option['mode'] == "battle-royale"):
+                    link = web.create_battle_royale()
+                else:
+                    link = web.get_link(option)
+                await message.channel.send(link)
+                web.count+=1
+                i+=1
+            web.busy = False
             # Update the status message
-            web.count+=1
             await self.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=str(str(web.count) + " succesfully sent challenges!")))
 
             return
