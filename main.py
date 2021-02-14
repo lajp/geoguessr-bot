@@ -239,7 +239,9 @@ class MyClient(discord.Client):
             if(web.busy):
                 await message.channel.send("Bot is busy! Please try again in a second...")
                 return
-            if(int(option['count']) > 10):
+            if(int(option['count']) == 0):
+                option['count'] = 1
+            elif(int(option['count']) > 10):
                 await message.channel.send("https://media1.tenor.com/images/dc29e366458426e5c12ed5b481f713b2/tenor.gif?itemid=16851937")
                 return
             web.busy = True
