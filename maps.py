@@ -1,7 +1,11 @@
 explore_maps = {
+    # Africa
     "botswana",
+    "kenya",
+    "lesotho",
     "senegal",
     "south-africa",
+    # Asia
     "bangladesh",
     "cambodia",
     "india",
@@ -13,11 +17,14 @@ explore_maps = {
     "philippines",
     "russia",
     "singapore",
+    "south-korea",
     "taiwan",
     "thailand",
+    # Europe
     "belgium",
     "bulgaria",
     "croatia",
+    "czech-republic",
     "denmark",
     "estonia",
     "finland",
@@ -45,12 +52,16 @@ explore_maps = {
     "turkey",
     "ukraine",
     "uk",
+    # North America
     "canada",
     "greenland",
+    "guatemala",
     "mexico",
     "usa",
+    # Oceania
     "australia",
     "new-zealand",
+    # South America
     "argentina",
     "bolivia",
     "brazil",
