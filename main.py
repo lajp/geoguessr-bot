@@ -48,8 +48,8 @@ class GeoGuessrBot():
         self.wait = WebDriverWait(self.driver, 10)
         self.busy = False
         with open('stats.json', 'w+') as json_file:
-            data = json.load(json_file)
             try:
+                data = json.load(json_file)
                 self.count = data['count']
             except:
                 self.count = 0
