@@ -47,7 +47,7 @@ class GeoGuessrBot():
         self.driver = webdriver.Chrome(executable_path='./drivers/chromedriver', options=chrome_options)
         self.wait = WebDriverWait(self.driver, 10)
         self.busy = False
-        with open('stats.json') as json_file:
+        with open('stats.json', 'w+') as json_file:
             data = json.load(json_file)
             try:
                 self.count = data['count']
