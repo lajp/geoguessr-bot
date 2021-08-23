@@ -232,7 +232,7 @@ class GeoGuessrBot():
             elif options['rules'] == "5050":
                 spy_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div[2]/div[3]/label/section/section[2]')))
                 spy_btn.click()
-            elif option['rules'] == "spy":
+            elif options['rules'] == "spy":
                 fiftyfifty_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div/div[2]/label/section/section[3]/label')))
                 fiftyfifty_btn.click()
 
@@ -247,7 +247,7 @@ class MyClient(discord.Client):
         print('Logged in as {0}!'.format(self.user))
 
     async def on_message(self, message):
-        if(message.content.lower().starswith("!fix")):
+        if(message.content.lower().startswith("!fix")):
             web.busy = False
             return
         if(message.content.lower().startswith("!geo")):
