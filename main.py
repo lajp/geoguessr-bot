@@ -30,11 +30,11 @@ help_message = """
 `!geo [mode] [rules=rules] [time=time] [count=count]`
 `!geo [mode]`
 `!geo [map=map] [rules=rules] [time=time] [count=count]`
-`!geo [lobby=lobby]`
+`!geo [lobby=lobby] [mode=mode] [rules=rules]`
 `!geo [help]`
 
-**MODE:** [cs|country-streak|br|battle-royale]
-**RULES:** rules=[nm|nz|nmz|nmpz]
+**MODE:** [cs|country-streak|brc|brd]
+**RULES:** rules=[nm|nz|nmz|nmpz] OR rules=[nopower|5050|spy]
 **MAP:** map=[link-to-map]
 **LOBBY:** lobby=[link-to-lobby]
 **TIME:** time=[0-500]
@@ -216,6 +216,26 @@ class GeoGuessrBot():
 
     def start_battle_royale(self, options):
         self.driver.get(options['lobby'])
+        if(options['mode'] != ""):
+            if options['mode'] == "brc":
+                brc_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div/div[1]/label/div/label[1]')))
+                brc_btn.click()
+            elif options['mode'] == "brd":
+                brd_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div[2]/div[1]/label/div/label[2]')))
+                brd_btn.click()
+        if(options['rules'] != ""):
+            if options['rules'] == "nopower":
+                fiftyfifty_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div/div[2]/label/section/section[3]/label')))
+                fiftyfifty_btn.click()
+                spy_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div[2]/div[3]/label/section/section[2]')))
+                spy_btn.click()
+            elif options['rules'] == "5050":
+                spy_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div[2]/div[3]/label/section/section[2]')))
+                spy_btn.click()
+            elif option['rules'] == "spy":
+                fiftyfifty_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div/div[2]/label/section/section[3]/label')))
+                fiftyfifty_btn.click()
+
         start_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div[1]/button')))
         start_btn.click()
         self.driver.get("https://www.geoguessr.com/")
@@ -227,6 +247,9 @@ class MyClient(discord.Client):
         print('Logged in as {0}!'.format(self.user))
 
     async def on_message(self, message):
+        if(message.content.lower().starswith("!fix")):
+            web.busy = False
+            return
         if(message.content.lower().startswith("!geo")):
             if(not type(message.channel) is discord.DMChannel):
                 if(allow_role_id != 0):
