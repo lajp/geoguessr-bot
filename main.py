@@ -274,9 +274,8 @@ class MyClient(discord.Client):
                 i+=1
             web.busy = False
             # Update the status message
-            await self.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=str(str(web.count) + " succesfully sent challenges!")))
-
-            return
+            self.print_log(message)
+            return await self.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=str(str(web.count) + " succesfully sent challenges!")))
 
         elif(message.content.lower().startswith("!stop")):
             if(message.author.id == your_id):
@@ -305,6 +304,9 @@ class MyClient(discord.Client):
         for i in optlist[a:]:
             opts[i[:i.find("=")]] = i[i.find("=")+1:]
         return opts
+
+    def print_log(self, message):
+        print("`{0}` recieved by: {1}".format(message.content, message.author))
 
 web = GeoGuessrBot()
 print("Geoguessr initialized")
