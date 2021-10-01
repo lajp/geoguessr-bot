@@ -55,18 +55,15 @@ class GeoGuessrBot():
                 self.count = 0
 
     def login(self):
-        self.driver.get("https://www.geoguessr.com/")
+        self.driver.get("https://www.geoguessr.com/signin")
 
-        login_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/div/header/div[2]/div/div[2]/a')))
-        login_btn.click()
-
-        email_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/form/div/div[1]/div[2]/input')))
+        email_field = self.wait.until(EC.element_to_be_clickable((By.NAME, 'email')))
         email_field.send_keys(username)
 
-        password_field = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/form/div/div[2]/div[2]/input')
+        password_field = self.driver.find_element_by_name('password')
         password_field.send_keys(password)
 
-        enter_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/form/div/section/section[2]/div/div/button')
+        enter_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div[2]/main/div/div/form/div/div[3]/div/button')
         enter_btn.click()
 
         sleep(2)
@@ -92,7 +89,7 @@ class GeoGuessrBot():
         return link
 
     def set_options(self, options):
-        no_default = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div/label/span[1]')))
+        no_default = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div/label')))
         try:
             slider = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[2]')
         except:
@@ -196,19 +193,17 @@ class GeoGuessrBot():
         self.driver.get("https://www.geoguessr.com/")
         return link
 
-    def create_battle_royale(self):
-        self.driver.get("https://www.geoguessr.com/battle-royale")
+    def create_battle_royale(self, options):
+        self.driver.get("https://www.geoguessr.com/play-with-friends")
 
-        try:
-            lobby_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[3]/button')))
-            lobby_btn.click()
-        except:
-            confirm_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div[1]/div/div/div/div/div/div[2]/button')))
-            confirm_btn.click()
-            lobby_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[3]/button')))
-            lobby_btn.click()
+        if(options["mode"] == "brd"):
+            lobby_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/main/div[1]/div/div/div[2]/div/div[2]/div')))
+        else:
+            lobby_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/main/div[1]/div/div/div[2]/div/div[1]/div')))
 
-        self.wait.until(lambda driver: self.driver.current_url != "https://www.geoguessr.com/battle-royale")
+        lobby_btn.click()
+
+        self.wait.until(lambda driver: self.driver.current_url != "https://www.geoguessr.com/play-with-friends")
 
         link = self.driver.current_url
         self.driver.get("https://www.geoguessr.com/")
@@ -216,27 +211,20 @@ class GeoGuessrBot():
 
     def start_battle_royale(self, options):
         self.driver.get(options['lobby'])
-        if(options['mode'] != ""):
-            if options['mode'] == "brc":
-                brc_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div/div[1]/label/div/label[1]')))
-                brc_btn.click()
-            elif options['mode'] == "brd":
-                brd_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div[2]/div[1]/label/div/label[2]')))
-                brd_btn.click()
         if(options['rules'] != ""):
             if options['rules'] == "nopower":
-                fiftyfifty_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div/div[2]/label/section/section[3]/label')))
+                fiftyfifty_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/main/div/div/div/div[3]/div[2]/div[2]/div/div[1]/div[2]/div[1]/button')))
                 fiftyfifty_btn.click()
-                spy_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div[2]/div[3]/label/section/section[2]')))
+                spy_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/main/div/div/div/div[3]/div[2]/div[2]/div/div[1]/div[2]/div[2]/button')))
                 spy_btn.click()
             elif options['rules'] == "5050":
-                spy_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div[2]/div[3]/label/section/section[2]')))
+                spy_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/main/div/div/div/div[3]/div[2]/div[2]/div/div[1]/div[2]/div[2]/button')))
                 spy_btn.click()
             elif options['rules'] == "spy":
-                fiftyfifty_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div/div[2]/label/section/section[3]/label')))
+                fiftyfifty_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/main/div/div/div/div[3]/div[2]/div[2]/div/div[1]/div[2]/div[1]/button')))
                 fiftyfifty_btn.click()
 
-        start_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div[2]/div/div[2]/div[1]/button')))
+        start_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/main/div/div/div/div[3]/div[2]/div[1]/button')))
         start_btn.click()
         self.driver.get("https://www.geoguessr.com/")
         return
@@ -255,18 +243,15 @@ class MyClient(discord.Client):
                 if(allow_role_id != 0):
                     kunku = message.guild.get_role(allow_role_id)
                     if(kunku not in message.author.roles):
-                        await message.channel.send("OOT LIIAN NOBO! " + message.author.mention)
-                        return
+                        return await message.channel.send("OOT LIIAN NOBO! " + message.author.mention)
 
             option = self.parse_options(message.content)
             if(web.busy):
-                await message.channel.send("Bot is busy! Please try again in a second...")
-                return
+                return await message.channel.send("Bot is busy! Please try again in a second...")
             if(int(option['count']) == 0):
                 option['count'] = 1
             elif(int(option['count']) > 10):
-                await message.channel.send("https://media1.tenor.com/images/dc29e366458426e5c12ed5b481f713b2/tenor.gif?itemid=16851937")
-                return
+                return await message.channel.send("https://media1.tenor.com/images/dc29e366458426e5c12ed5b481f713b2/tenor.gif?itemid=16851937")
             web.busy = True
             i = 0
             while(i < int(option['count'])):
@@ -280,8 +265,8 @@ class MyClient(discord.Client):
                     web.start_battle_royale(option)
                     web.busy = False
                     return
-                elif(option['mode'] == "br" or option['mode'] == "battle-royale"):
-                    link = web.create_battle_royale()
+                elif(option['mode'].startswith("br")):
+                    link = web.create_battle_royale(option)
                 else:
                     link = web.get_link(option)
                 await message.channel.send(link)
@@ -295,11 +280,10 @@ class MyClient(discord.Client):
 
         elif(message.content.lower().startswith("!stop")):
             if(message.author.id == your_id):
-                await self.stop_and_save()
+                return await self.stop_and_save()
 
     async def send_help(self, message):
-        await message.channel.send(help_message)
-        return
+        return await message.channel.send(help_message)
 
     async def stop_and_save(self):
         data = {}
