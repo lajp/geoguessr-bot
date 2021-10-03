@@ -253,6 +253,7 @@ class MyClient(discord.Client):
             elif(int(option['count']) > 10):
                 return await message.channel.send("https://media1.tenor.com/images/dc29e366458426e5c12ed5b481f713b2/tenor.gif?itemid=16851937")
             web.busy = True
+            await message.channel.trigger_typing()
             i = 0
             while(i < int(option['count'])):
                 if(option['map'] != ""):
@@ -273,8 +274,8 @@ class MyClient(discord.Client):
                 web.count+=1
                 i+=1
             web.busy = False
-            # Update the status message
             self.print_log(message)
+            # Update the status message
             return await self.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=str(str(web.count) + " succesfully sent challenges!")))
 
         elif(message.content.lower().startswith("!stop")):
