@@ -184,7 +184,7 @@ class GeoGuessrBot():
         invite_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[4]/button')))
         invite_btn.click()
 
-        start_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[2]/button')))
+        start_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div/div/main/div/div/div/div/div/div/article/div[2]/div[2]/button')))
         start_btn.click()
 
         self.wait.until(lambda driver: self.driver.current_url != options['map']+"/play")
