@@ -60,10 +60,10 @@ class GeoGuessrBot():
         email_field = self.wait.until(EC.element_to_be_clickable((By.NAME, 'email')))
         email_field.send_keys(username)
 
-        password_field = self.driver.find_element_by_name('password')
+        password_field = self.driver.find_element(By.NAME, 'password')
         password_field.send_keys(password)
 
-        enter_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div[2]/main/div/div/form/div/div[3]/div/button')
+        enter_btn = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/main/div/div/form/div/div[3]/div/button')
         enter_btn.click()
 
         sleep(2)
@@ -91,7 +91,7 @@ class GeoGuessrBot():
     def set_options(self, options):
         no_default = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div/label')))
         try:
-            slider = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[2]')
+            slider = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[2]')
         except:
             no_default.click()
 
@@ -104,26 +104,26 @@ class GeoGuessrBot():
         actions.perform()
 
         if(options['rules'] == ""):
-            no_rules = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[1]')
+            no_rules = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[1]')
             no_rules.click()
         elif(options['rules'].lower() == "nm"):
-            nm_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[2]')
+            nm_btn = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[2]')
             nm_btn.click()
         elif(options['rules'].lower() == "nz"):
-            nz_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[3]')
+            nz_btn = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[3]')
             nz_btn.click()
         elif(options['rules'].lower() == "nmz"):
-            nmz_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[4]')
+            nmz_btn = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[4]')
             nmz_btn.click()
         elif(options['rules'].lower() == "nmpz"):
-            nmpz_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[5]')
+            nmpz_btn = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/div[2]/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[5]')
             nmpz_btn.click()
         return
 
     def set_map_options(self, options):
         no_default = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div/label/span[2]')))
         try:
-            slider = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[2]/div[2]')
+            slider = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[2]/div[2]')
         except:
             no_default.click()
 
@@ -136,19 +136,19 @@ class GeoGuessrBot():
         actions.perform()
 
         if(options['rules'] == ""):
-            no_rules = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[1]')
+            no_rules = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[1]')
             no_rules.click()
         elif(options['rules'].lower() == "nm"):
-            nm_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[2]')
+            nm_btn = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[2]')
             nm_btn.click()
         elif(options['rules'].lower() == "nz"):
-            nz_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[3]')
+            nz_btn = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[3]')
             nz_btn.click()
         elif(options['rules'].lower() == "nmz"):
-            nmz_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[4]')
+            nmz_btn = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[4]')
             nmz_btn.click()
         elif(options['rules'].lower() == "nmpz"):
-            nmpz_btn = self.driver.find_element_by_xpath('//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[5]')
+            nmpz_btn = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div/main/div/div/div/div/div/div/article/div[3]/div/div/div[2]/div[3]/div/div[2]/div/label[5]')
             nmpz_btn.click()
         return
 
