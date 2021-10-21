@@ -1,3 +1,5 @@
+**THIS REPOSITORY HAS BEEN ARCHIVED IN THE FAVOUR OF THE [NEW IMPLEMENTATION WRITTEN IN RUST](https://github.com/lajp/geoguessr-bot-rs)**
+
 # geoguessr-bot
 
 This is a simple implementation of a discord bot that sends geoguessr challenge links on demand.
